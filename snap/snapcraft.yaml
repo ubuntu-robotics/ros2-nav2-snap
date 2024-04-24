@@ -76,3 +76,14 @@ parts:
     organize:
       '*.sh': usr/bin/
       '*.yaml': usr/share/ros2-nav2/config/
+
+  scripts:
+    plugin: dump
+    source: snap/local/
+    organize:
+      '*.sh': usr/bin/
+  configuration:
+    plugin: dump
+    source: snap/local/configuration/
+    organize:
+      '*.yaml': usr/share/ros2-nav2/config/
