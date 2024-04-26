@@ -38,6 +38,7 @@ architectures:
 apps:
   localization:
     command: usr/bin/localization_launcher.sh
+    command-chain: [usr/bin/map_loader.sh]
     daemon: simple
     install-mode: disable
     plugs: [network, network-bind]
@@ -67,23 +68,17 @@ parts:
   ros2-nav2:
     plugin: nil
     stage-packages:
+      - wget
+      - libssl3
       - ros-humble-nav2-bringup
-
-  # copy local scripts to the snap usr/bin
-  local-files:
-    plugin: dump
-    source: snap/local/
-    organize:
-      '*.sh': usr/bin/
-      '*.yaml': usr/share/ros2-nav2/config/
 
   scripts:
     plugin: dump
     source: snap/local/
     organize:
       '*.sh': usr/bin/
-  configuration:
+  configuration-templates:
     plugin: dump
-    source: snap/local/configuration/
+    source: snap/local/configuration_templates/
     organize:
-      '*.yaml': usr/share/ros2-nav2/config/
+      '*.yaml': usr/share/ros2-nav2/configuration_templates/
