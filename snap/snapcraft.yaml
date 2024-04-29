@@ -35,6 +35,10 @@ architectures:
   - build-on: amd64
   - build-on: arm64
 
+hooks:
+  configure:
+    plugs: [network]
+
 apps:
   localization:
     command: usr/bin/localization_launcher.sh

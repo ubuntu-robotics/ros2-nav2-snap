@@ -25,7 +25,7 @@ It can also be installed directly from the store:
 The snap offers the following functionality:
 
 - Slam
-- Localisation
+- Localization
 - Navigation
 
 Those apps can be configured via snap parameters.
@@ -43,9 +43,8 @@ Otherwise to configure it to a local configuration file:
 
 The local configuration should be at a path accessible to the snap such as $SNAP_COMMON.
 
-Some parameters templates are provided that can be used and mofiedid. To use them set the config to:
-
-`snap set ros2-nav2 <app-name>-config="$SNAP_COMMON/configuration_templates/<app_name>_params_template.yaml"`
+Some parameters templates are provided that can be used and mofiedid. They are stored in the `$SNAP_COMMON/configuration_template folder`
+and they can be used to create your own configuration file in the $SNAP_COMMON/config folder.
 
 ### Slam
 
@@ -63,19 +62,51 @@ Once finished, stop the mapping with,
 This will terminate the mapping and automatically
 save the map in '${SNAP_COMMON}/maps/new_map.{yaml,png}'.
 
-The new map will be saved with current date and time and a synbolic soft link to current_map.yaml will be created.
+The new map will be saved with current date and time and a symbolic soft link to current_map.yaml will be created.
+
+### Map saver
+
+The map saver configuration can be configured via the `map-saver-config` parameter.
+
+The map saver comes with default parameters. The available configurable parameters are the following:
+
+- free_thresh_default
+- occupied_thresh_default
+
+If a URL or filepath is provided those parameters will be overwritten, otherwise the map_saver defaults will be used.
 
 ### Load map
 
 The map can be either created with the slam application or loaded from URL.
 
-When setting a URL for the map files, .pgm and .yaml file, those will be downloaded and the softlink current_map.yaml
-directed to them.
+The optional parameter provided to load a map is:
+snapctl set map-yaml-path!
 
-### Localization and navigation
+The parameter can point to a URL as follow:
+
+`sudo snap set ros2-nav2 map-yaml-path=https://raw.githubusercontent.com/ros-planning/navigation2/main/nav2_bringup/maps/turtlebot3_world.yaml`
+
+When setting this parameter to a URL, the map .yaml file and it's associated image will be downloaded and stored in `$SNAP_COMMON/maps`.
+A soft symlink to the downloaded map will be created, so the map will be used by the localization algorithm.
+
+### Localization
+
+The localization configuration file can be can be configured via the `localization-config` parameter.
 
 With the environment mapped, one can make use of the autonomous navigation.
-To do so, start the localisation and navigation with,
+To do so, first start the localization application. The localization allows the robot to localize itself in the map provided.
+It can be started and stopped respectively with,
 
 `snap start ros2-nav2.localization`
+`snap stop ros2-nav2.localization`
+
+### Navigation
+
+The navigation configuration file can be can be configured via the `navigation-config` parameter.
+
+
+The navigation application allows the robot to autonomously move around to a defined goal while avoiding obstacles. 
+It can be started and stopped respectively with,
 `snap start ros2-nav2.navigation`
+`snap stop ros2-nav2.navigation`
+

@@ -1,0 +1,4 @@
+map_saver:
+  ros__parameters:
+    free_thresh_default: 0.25
+    occupied_thresh_default: 0.65

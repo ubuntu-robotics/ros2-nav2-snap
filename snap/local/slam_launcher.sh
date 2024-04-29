@@ -5,6 +5,11 @@ SIMULATION="$(snapctl get simulation)"
 
 source $SNAP/usr/bin/url_management.sh
 
+if [ -z "${SLAM_CONFIG_FILE}" ] ; then
+    echo "no localization configuration file found."
+    exit 1
+fi
+
 # it the config-path is a URL we save it to a default local location
 # otherwise, it it's a local path we use that.
 if is_url "${SLAM_CONFIG_FILE}" ; then
@@ -18,4 +23,4 @@ else
 fi
 
 ${SNAP}/ros2 launch nav2_bringup slam_launch.py \
-  params_file:=${SLAM_CONFIG_FILE} use_sim_time:=${SIMULATION}
+  params_file:=${CONFIG_FILE} use_sim_time:=${SIMULATION}
