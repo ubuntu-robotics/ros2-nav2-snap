@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 set -e
 
-MAP_YAML_URL="$(snapctl set map-yaml-path)"
+MAP_YAML_URL="$(snapctl get map-yaml-path)"
 
 if [ -n ${MAP_YAML_URL} ]; then
   snapctl set map-yaml-path=""
