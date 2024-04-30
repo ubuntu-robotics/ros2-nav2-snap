@@ -12,7 +12,7 @@ This package is distributed as a snap and as such is meant to be built using sna
 
 Using the locally built snap, first install it
 
-`snap install --dangerous ros2-teleop-*.snap`
+`snap install --dangerous ros2-nav2-*.snap`
 
 It can also be installed directly from the store:
 
@@ -34,7 +34,7 @@ When the application is stopped, the map is automatically saved at `$SNAP_COMMON
 
 The slam application parameters can be configured via the following snap parameter:
 
-    - slam-config (string, default: '')
+- [slam-config](https://github.com/ubuntu-robotics/ros2-nav2-snap/blob/main/snap/hooks/install#L11) (string, default: '')
 
 The slam configuration file can be either edited from the templates available at `$SNAP_COMMON/configuration_templates` and used via:
 
@@ -59,7 +59,7 @@ Note: the URL must be reachable by the snap. When using a URL, the configuration
 After stopping the slam application a map is automatically saved. This is achieved by calling a service to the map saver.
 The map saver can be configured via the following snap parameter:
 
-    - map-saver-config (string, default: '')
+- [map-saver-config](https://github.com/ubuntu-robotics/ros2-nav2-snap/blob/main/snap/hooks/install#L16) (string, default: '')
 
 Without a configuration the map_saver will be called with the default parameters provided upstream.
 The parameters that can be configured by means of a yaml file are `free_thresh_default` and `occupied_thresh_default`.
@@ -89,7 +89,7 @@ The map can be either created with the slam application or loaded from URL.
 
 The optional parameter provided to load a map is:
 
-    - map-yaml-path (string, default: '')
+- [map-yaml-path](https://github.com/ubuntu-robotics/ros2-nav2-snap/blob/feat/configuration-wip/snap/hooks/install#L15) (string, default: '')
 
 The parameter can be set to a local configuration file as follows:
 
@@ -119,7 +119,7 @@ It can be started and stopped respectively with,
 
 The localization application parameters can be configured via the following snap parameter:
 
-    - localization-config (string, default: '')
+- [localization-config](https://github.com/ubuntu-robotics/ros2-nav2-snap/blob/main/snap/hooks/install#L13) (string, default: '')
 
 The localization configuration file can be either edited from the templates available at `$SNAP_COMMON/configuration_templates` and used via:
 
@@ -151,7 +151,7 @@ It can be started and stopped respectively with:
 
 The navigation application parameters can be configured via the following snap parameter:
 
-    - navigation-config (string, default: '')
+- [navigation-config](https://github.com/ubuntu-robotics/ros2-nav2-snap/blob/main/snap/hooks/install#L12) (string, default: '')
 
 The navigation configuration file can be either edited from the templates available at `$SNAP_COMMON/configuration_templates` and used via:
 
@@ -168,6 +168,6 @@ Otherwise, it can be provided by means of a URL. In such case, the snap will dow
 
 To configure the navigation-config param to a URL:
 
-`snap set ros2-nav2 navigation-config="https://raw.githubusercontent.com/robot-repo/navigation_params.yaml"`
+`snap set ros2-nav2 navigation-config="$SNAP_COMMON/config/nav2_params.yaml"`
 
 Note: the URL must be reachable by the snap. When using a URL, the configuration file will be downloaded everytime the app is launched. Therefore a configuration update upstream will be applied with the application relaunch.

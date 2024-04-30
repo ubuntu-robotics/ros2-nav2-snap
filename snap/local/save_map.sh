@@ -15,20 +15,20 @@ MAP_SAVER_CONFIG_FILE="$(snapctl get map-saver-config)"
 # it the config-path is a URL we save it to a default local location
 # otherwise, it it's a local path we use that.
 if is_url "${MAP_SAVER_CONFIG_FILE}" ; then
-  STORAGE_PATH_TO_CONFIG="$SNAP_COMMON/config/map_saver.yaml"
-  if get_url "${MAP_SAVER_CONFIG_FILE}" "${STORAGE_PATH_TO_CONFIG}"; then
-    CONFIG_FILE=${STORAGE_PATH_TO_CONFIG}
-  fi
+    STORAGE_PATH_TO_CONFIG="$SNAP_COMMON/config/map_saver.yaml"
+    if get_url "${MAP_SAVER_CONFIG_FILE}" "${STORAGE_PATH_TO_CONFIG}"; then
+        CONFIG_FILE=${STORAGE_PATH_TO_CONFIG}
+    fi
 else
-  echo "Config is not a URL, setting local path"
-  CONFIG_FILE=${MAP_SAVER_CONFIG_FILE}
+    echo "Config is not a URL, setting local path"
+    CONFIG_FILE=${MAP_SAVER_CONFIG_FILE}
 fi
 
 # if we have a config file we overwrite the thresholds accordingly
 if [ -n "${CONFIG_FILE}" ]; then
-  MAP_SAVER_YAML_CONTENT=$(<$(readlink -f "${CONFIG_FILE}"))
-  MAP_FREE_THRESH=$(echo "$MAP_SAVER_YAML_CONTENT" | grep -oP 'free_thresh_default:\s*\K[0-9.]+')
-  MAP_OCC_THRESH=$(echo "$MAP_SAVER_YAML_CONTENT" | grep -oP 'occupied_thresh_default:\s*\K[0-9.]+')
+    MAP_SAVER_YAML_CONTENT=$(<$(readlink -f "${CONFIG_FILE}"))
+    MAP_FREE_THRESH=$(echo "$MAP_SAVER_YAML_CONTENT" | grep -oP 'free_thresh_default:\s*\K[0-9.]+')
+    MAP_OCC_THRESH=$(echo "$MAP_SAVER_YAML_CONTENT" | grep -oP 'occupied_thresh_default:\s*\K[0-9.]+')
 fi
 
 # Create map directory if it doesn't exist

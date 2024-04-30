@@ -42,7 +42,7 @@ description: |
     - slam-config (string, default: '')
     - navigation-config (string, default: '')
     - localization-config (string, default: '')
-    - map-saver-config (bool, default: '')
+    - map-saver-config (string, default: '')
 
     The SNAP offers some template configurations in the $SNAP_COMMON/configuration_templates
     that can be copied, modified and placed in $SNAP_COMMON/config for usage.
@@ -67,7 +67,6 @@ base: core22
 
 contact: https://github.com/ubuntu-robotics/ros2-nav2/issues
 issues: https://github.com/ubuntu-robotics/ros2-nav2/issues
-website: https://husarion.com/
 
 architectures:
   - build-on: amd64

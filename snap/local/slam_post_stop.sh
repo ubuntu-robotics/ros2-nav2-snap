@@ -4,7 +4,7 @@ set -e
 MAP_YAML_URL="$(snapctl get map-yaml-path)"
 
 if [ -n ${MAP_YAML_URL} ]; then
-  snapctl set map-yaml-path=""
+    snapctl set map-yaml-path=""
 fi
 
 MAP_DIR="${SNAP_COMMON}/maps"
@@ -15,13 +15,13 @@ MAP_CONFIG_FILE="${MAP_FILE_NO_EXT}.yaml"
 MAP_IMG_FILE="${MAP_FILE_NO_EXT}${MAP_IMG_EXT}"
 
 if [ ! -f ${MAP_CONFIG_FILE} ]; then
-  >&2 echo "Could not find the new map configuration file!"
-  exit 1
+    >&2 echo "Could not find the new map configuration file!"
+    exit 1
 fi
 
 if [ ! -f ${MAP_IMG_FILE} ]; then
-  >&2 echo "Could not find the new map file!"
-  exit 1
+    >&2 echo "Could not find the new map file!"
+    exit 1
 fi
 
 # backup our map with the date and time
