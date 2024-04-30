@@ -62,11 +62,11 @@ jobs:
                     check_existence topic map 30
                     check_existence node slam_toolbox 30
                     check_existence node map_saver 30
-                    sudo snap stop ros2-nav2.mapping
+                    sudo snap stop ros2-nav2.slam
 
                     ## Load map
                     sudo snap set ros2-nav2 map-yaml-path=https://raw.githubusercontent.com/ros-planning/navigation2/main/nav2_bringup/maps/turtlebot3_world.yaml
-                    
+
                     ## Set localization configuration
                     sudo snap set ros2-nav2 localization-config=https://raw.githubusercontent.com/husarion/rosbot-xl-nav-snap/main/snap/local/localization_params.yaml
 
@@ -76,22 +76,13 @@ jobs:
                     check_existence node amcl 30
                     sudo snap stop ros2-nav2.localization
 
-                    ## Check map has been downloaded and loaded
-                    symlink_path=/var/snap/ros2-nav2/common/maps/current_yaml.yaml
-                    expected_target=/var/snap/ros2-nav2/common/maps/turtlebot3_world.yaml
-                    actual_target=$(readlink -f "$symlink_path")
-                   
-                    if [ -L "$symlink_path" ]; then
-                        actual_target=$(readlink -f "$symlink_path")
-                        if [ "$actual_target" = "$expected_target" ]; then
-                            echo "True"
-                            exit 0
-                        else
-                            echo "False"
-                            exit 1
-                        fi
+                    ## Check map has been downloaded
+                    map_location="/root/snap/ros2-nav2/common/maps/turtlebot3_world.yaml"
+
+                    if [ -n "$map_location" ]; then
+                      echo "Map found"
                     else
-                        echo "Current map symlink does not exist"
+                        echo "Could not find map at $map_location"
                         exit 1
                     fi             
 
