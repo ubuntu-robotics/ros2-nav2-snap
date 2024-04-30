@@ -15,22 +15,21 @@ esac
 
 OPTS="slam-config navigation-config localization-config map-yaml-path map-saver-config"
 for OPT in ${OPTS}; do
-  CONFIG="$(snapctl get ${OPT})"
-	if [ -n "${CONFIG}" ]; then
-		if [[ "${CONFIG}" =~ ^(https?|http):// ]]; then
-			echo "${OPT} is a URL: ${CONFIG}"
-			if ! SYSTEM_WGETRC=$SNAP/etc/wgetrc wget -q --spider "${CONFIG}"; then
-				>&2 echo "URL is not valid: ${CONFIG}"
-				logger -t ${SNAP_NAME} "URL is not valid: ${CONFIG}"
-				exit 1
-			fi
-		else
-			if ! [[ -r "${CONFIG}" && -f "${CONFIG}" ]]; then
-				>&2 echo "'${CONFIG}' is not a supported value for ${OPT}."
-				logger -t ${SNAP_NAME} "'${CONFIG}' is not a supported value for ${OPT}."
-				exit 1
-			fi
-		fi
-	fi
+    CONFIG="$(snapctl get ${OPT})"
+    if [ -n "${CONFIG}" ]; then
+        if [[ "${CONFIG}" =~ ^(https?|http):// ]]; then
+	        echo "${OPT} is a URL: ${CONFIG}"
+            if ! SYSTEM_WGETRC=$SNAP/etc/wgetrc wget -q --spider "${CONFIG}"; then
+                >&2 echo "URL is not valid: ${CONFIG}"
+                logger -t ${SNAP_NAME} "URL is not valid: ${CONFIG}"
+                exit 1
+	        fi
+        else
+            if ! [[ -r "${CONFIG}" && -f "${CONFIG}" ]]; then
+                >&2 echo "'${CONFIG}' is not a supported value for ${OPT}."
+                logger -t ${SNAP_NAME} "'${CONFIG}' is not a supported value for ${OPT}."
+                exit 1
+            fi
+        fi
+    fi
 done
-
