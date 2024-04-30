@@ -1,0 +1,106 @@
+name: snap
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+  workflow_call:
+   inputs:
+      branch-name:
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  snap:
+    uses: ubuntu-robotics/snap_workflows/.github/workflows/snap.yaml@main
+    secrets:
+      store-login: ${{ secrets.STORE_LOGIN }}
+    with:
+      branch-name: ${{ inputs.branch-name == '' && github.ref || inputs.branch-name }}
+      snap-name: ros2-teleop
+      enable-experimental-extensions-env: true
+      publish: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+      test-script: |
+                    #!/bin/bash
+
+                    check_existence() {
+                      local topic_or_node="${1}"
+                      local name="${2}"
+                      local timeout="${3}"
+                      local start_time=$(date +%s)
+
+                      while true; do
+                        ros2 "${topic_or_node}" list | grep -q "${name}"
+                        if [ $? -eq 0 ]; then
+                          echo "${name} is running."
+                          return 0
+                        fi
+
+                        local current_time=$(date +%s)
+                        local elapsed_time=$((current_time - start_time))
+
+                        if [ $elapsed_time -ge $timeout ]; then
+                          echo "Error $name is not running."
+                          exit 1
+                        fi
+                        sleep 1
+                      done
+                    }
+
+                    ## Install ROS 2 cli
+                    sudo snap install ros2-cli --channel=humble/beta
+
+                    ## Set a slam config
+                    sudo snap set ros2-nav2 slam-config=https://raw.githubusercontent.com/husarion/rosbot-xl-nav-snap/main/snap/local/slam_params.yaml
+
+                    ## Test slam application
+                    sudo snap start ros2-nav2.slam
+                    check_existence topic map 30
+                    check_existence node slam_toolbox 30
+                    check_existence node map_saver 30
+                    sudo snap stop ros2-nav2.mapping
+
+                    ## Load map
+                    sudo snap set ros2-nav2 map-yaml-path=https://raw.githubusercontent.com/ros-planning/navigation2/main/nav2_bringup/maps/turtlebot3_world.yaml
+                    
+                    ## Set localization configuration
+                    sudo snap set ros2-nav2 localization-config=https://raw.githubusercontent.com/husarion/rosbot-xl-nav-snap/main/snap/local/localization_params.yaml
+
+                    ## Test localization application
+                    sudo snap start ros2-nav2.localization
+                    check_existence node map_server 30
+                    check_existence node amcl 30
+                    sudo snap stop ros2-nav2.localization
+
+                    ## Check map has been downloaded and loaded
+                    symlink_path=/var/snap/ros2-nav2/common/maps/current_yaml.yaml
+                    expected_target=/var/snap/ros2-nav2/common/maps/turtlebot3_world.yaml
+                    actual_target=$(readlink -f "$symlink_path")
+                   
+                    if [ -L "$symlink_path" ]; then
+                        actual_target=$(readlink -f "$symlink_path")
+                        if [ "$actual_target" = "$expected_target" ]; then
+                            echo "True"
+                            exit 0
+                        else
+                            echo "False"
+                            exit 1
+                        fi
+                    else
+                        echo "Current map symlink does not exist"
+                        exit 1
+                    fi             
+
+                    ## Set navigation configuration
+                    sudo snap set ros2-nav2 navigation-config=https://raw.githubusercontent.com/husarion/rosbot-xl-nav-snap/main/snap/local/nav2_params.yaml
+
+                    ## Test navigation configuration
+                    sudo snap start ros2-nav2.navigation
+                    check_existence node lifecycle_manager_navigation 30
+                    check_existence node bt_navigator 30
+                    check_existence topic cmd_vel_nav 30
+                    sudo snap stop ros2-nav2.navigation
