@@ -6,7 +6,7 @@ SIMULATION="$(snapctl get simulation)"
 source $SNAP/usr/bin/url_management.sh
 
 if [ -z "${SLAM_CONFIG_FILE}" ] ; then
-    echo "no localization configuration file found."
+    echo "No Slam configuration file found."
     exit 1
 fi
 

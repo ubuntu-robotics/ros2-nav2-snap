@@ -7,12 +7,12 @@ SIMULATION="$(snapctl get simulation)"
 source $SNAP/usr/bin/url_management.sh
 
 if [ -z "${LOC_CONFIG_FILE}" ] ; then
-    echo "no localization configuration file found."
+    echo "No localization configuration file found."
     exit 1
 fi
 
 if [ -z "${MAP_FILE}" ]; then
-  echo "no current_map.yaml found, run slam to generate one or load one via URL"
+  echo "No current_map.yaml found, run slam to generate one or load one via URL"
   exit 1
 fi
 

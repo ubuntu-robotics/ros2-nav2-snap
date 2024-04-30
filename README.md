@@ -6,7 +6,7 @@ The ros2-nav2 snap provides mapping, localization and navigation capabilities fo
 
 This package is distributed as a snap and as such is meant to be built using snapcraft:
 
-SNAPCRAFT_ENABLE_EXPERIMENTAL_EXTENSIONS=1 snapcraft
+`SNAPCRAFT_ENABLE_EXPERIMENTAL_EXTENSIONS=1 snapcraft`
 
 ## Install
 
@@ -20,93 +20,134 @@ It can also be installed directly from the store:
 
 ## Use
 
-### Configuration
+### Slam
 
-The snap offers the following functionality:
+This application allows for mapping the environment. It can be launch as follows,
 
-- Slam
-- Localization
-- Navigation
+`snap start rosbot-xl-nav.slam`
 
-Those apps can be configured via snap parameters.
-The configuration file can be provided by means of a URL.
-In such case, the snap will download the file and place it in `$SNAP_COMMON/config/app_name_params.yaml`.
-To configure the config-filepath to a URL:
+One can then drive the robot around to create a 2D representation of the environment. Once the area is covered, stop the application with,
 
-`snap set ros2-nav2 <app-name>-config="https://raw.githubusercontent.com/robot-repo/<app_name>_params.yaml"`
+`snap stop rosbot-xl-nav.slam`
+
+When the application is stopped, the map is automatically saved at `$SNAP_COMMON/maps/current_map.{png,yaml}`.
+
+The slam application parameters can be configured via the following snap parameter:
+
+    - slam-config (string, default: '')
+
+The slam configuration file can be either edited from the templates available at `$SNAP_COMMON/configuration_templates` modified and placed in `$SNAP_COMMON/config`. Then, the parameter has to be configured to the local configuration file as follows:
+
+`snap set ros2-nav2 slam-config="$SNAP_COMMON/config/slam_params.yaml"`
+
+The local configuration should be at a path accessible to the snap such as `$SNAP_COMMON`.
+Otherwise, it can be provided by means of a URL. In such case, the snap will download the file and place it in `$SNAP_COMMON/config/slam_params.yaml`.
+
+To configure the slam-config param to a URL:
+
+`snap set ros2-nav2 slam-config="https://raw.githubusercontent.com/robot-repo/slam_params.yaml"`
 
 Note: the URL must be reachable by the snap. When using a URL, the configuration file will be downloaded everytime the app is launched. Therefore a configuration update upstream will be applied with the application relaunch.
 
-Otherwise to configure it to a local configuration file:
-
-`snap set ros2-nav2 <app-name>-config="$SNAP_COMMON/config/<app_name>_params.yaml"`
-
-The local configuration should be at a path accessible to the snap such as $SNAP_COMMON.
-
-Some parameters templates are provided that can be used and mofiedid. They are stored in the `$SNAP_COMMON/configuration_template folder`
-and they can be used to create your own configuration file in the $SNAP_COMMON/config folder.
-
-### Slam
-
-The slam application parameters can be configured via the `slam-config` parameter.
-
-The mapping application can be launched as,
-
-`snap start ros2-nav2.slam`
-
-After launching the app, simply drive the robot around until you've mapped the area.
-Once finished, stop the mapping with,
-
-`snap stop ros2-nav2.slam`
-
-This will terminate the mapping and automatically
-save the map in '${SNAP_COMMON}/maps/new_map.{yaml,png}'.
-
-The new map will be saved with current date and time and a symbolic soft link to current_map.yaml will be created.
-
 ### Map saver
 
-The map saver configuration can be configured via the `map-saver-config` parameter.
+After stopping the slam application a map is automatically saved. This is achieved by calling a service to the map saver.
+The map saver can be configured via the following snap parameter:
 
-The map saver comes with default parameters. The available configurable parameters are the following:
+    - map-saver-config (string, default: '')
 
-- free_thresh_default
-- occupied_thresh_default
+Without a configuration the map_saver will be called with the default parameters provided upstream.
+The parameters that can be configured by means of a yaml file are `free_thresh_default` and `occupied_thresh_default`.
 
-If a URL or filepath is provided those parameters will be overwritten, otherwise the map_saver defaults will be used.
+The map-saver configuration file can be either edited from the templates available at `$SNAP_COMMON/configuration_templates` modified and placed in `$SNAP_COMMON/config`. Then, the parameter has to be configured to the local configuration file as follows:
+
+`snap set ros2-nav2 map-saver-config="$SNAP_COMMON/config/map_saver_params.yaml"`
+
+The local configuration should be at a path accessible to the snap such as `$SNAP_COMMON`.
+
+Otherwise, it can be provided by means of a URL. In such case, the snap will download the file and place it in `$SNAP_COMMON/config/map_saver_params.yaml`.
+
+To configure the map-saver-config param to a URL:
+
+`snap set ros2-nav2 map-saver-config="https://raw.githubusercontent.com/robot-repo/map_saver_params.yaml"`
+
+Note: the URL must be reachable by the snap. When using a URL, the configuration file will be downloaded everytime the app is launched. Therefore a configuration update upstream will be applied with the application relaunch.
 
 ### Load map
 
 The map can be either created with the slam application or loaded from URL.
 
 The optional parameter provided to load a map is:
-snapctl set map-yaml-path!
 
-The parameter can point to a URL as follow:
+    - map-yaml-path (string, default: '')
+
+The parameter can be set to a local configuration file as follows:
+
+`snap set ros2-nav2 map-yaml-path="$SNAP_COMMON/config/map.yaml"`
+
+The local configuration should be at a path accessible to the snap such as `$SNAP_COMMON`.
+
+Otherwise, the parameter can point to a URL as follow:
 
 `sudo snap set ros2-nav2 map-yaml-path=https://raw.githubusercontent.com/ros-planning/navigation2/main/nav2_bringup/maps/turtlebot3_world.yaml`
 
 When setting this parameter to a URL, the map .yaml file and it's associated image will be downloaded and stored in `$SNAP_COMMON/maps`.
 A soft symlink to the downloaded map will be created, so the map will be used by the localization algorithm.
+Note: the URL must be reachable by the snap. When using a URL, the configuration file will be downloaded everytime the app is launched. Therefore a configuration update upstream will be applied with the application relaunch.
+
+If SLAM is performed, this parameter will be overwritten and the new generated map used.
 
 ### Localization
 
-The localization configuration file can be can be configured via the `localization-config` parameter.
-
 With the environment mapped, one can make use of the autonomous navigation.
-To do so, first start the localization application. The localization allows the robot to localize itself in the map provided.
+To do so, the localization application has to be started. The localization allows the robot to localize itself in the map provided.
 It can be started and stopped respectively with,
 
 `snap start ros2-nav2.localization`
+
 `snap stop ros2-nav2.localization`
+
+The localization application parameters can be configured via the following snap parameter:
+
+    - localization-config (string, default: '')
+
+The localization configuration file can be either edited from the templates available at `$SNAP_COMMON/configuration_templates` modified and placed in `$SNAP_COMMON/config`. Then, the parameter has to be configured to the local configuration file as follows:
+
+`snap set ros2-nav2 localization-config="$SNAP_COMMON/config/localization_params.yaml"`
+
+The local configuration should be at a path accessible to the snap such as `$SNAP_COMMON`.
+
+Otherwise, it can be provided by means of a URL. In such case, the snap will download the file and place it in `$SNAP_COMMON/config/localization_params.yaml`.
+
+To configure the localization-config param to a URL:
+
+`snap set ros2-nav2 localization-config="https://raw.githubusercontent.com/robot-repo/localization_params.yaml"`
+
+Note: the URL must be reachable by the snap. When using a URL, the configuration file will be downloaded everytime the app is launched. Therefore a configuration update upstream will be applied with the application relaunch.
 
 ### Navigation
 
-The navigation configuration file can be can be configured via the `navigation-config` parameter.
+The navigation application allows the robot to autonomously move around to a defined goal while avoiding obstacles.
+It can be started and stopped respectively with:
 
-
-The navigation application allows the robot to autonomously move around to a defined goal while avoiding obstacles. 
-It can be started and stopped respectively with,
 `snap start ros2-nav2.navigation`
+
 `snap stop ros2-nav2.navigation`
 
+The navigation application parameters can be configured via the following snap parameter:
+
+    - navigation-config (string, default: '')
+
+The navigation configuration file can be either edited from the templates available at `$SNAP_COMMON/configuration_templates` modified and placed in `$SNAP_COMMON/config`. Then, the parameter has to be configured to the local configuration file as follows:
+
+`snap set ros2-nav2 navigation-config="$SNAP_COMMON/config/navigation_params.yaml"`
+
+The local configuration should be at a path accessible to the snap such as `$SNAP_COMMON`.
+
+Otherwise, it can be provided by means of a URL. In such case, the snap will download the file and place it in `$SNAP_COMMON/config/navigation_params.yaml`.
+
+To configure the navigation-config param to a URL:
+
+`snap set ros2-nav2 navigation-config="https://raw.githubusercontent.com/robot-repo/navigation_params.yaml"`
+
+Note: the URL must be reachable by the snap. When using a URL, the configuration file will be downloaded everytime the app is launched. Therefore a configuration update upstream will be applied with the application relaunch.

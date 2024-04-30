@@ -10,7 +10,7 @@ MAP_OCC_THRESH="0.65"
 MAP_MODE="trinary"
 
 source $SNAP/usr/bin/url_management.sh
-MAP_SAVER_CONFIG_FILE="$(snapctl get map-saver)"
+MAP_SAVER_CONFIG_FILE="$(snapctl get map-saver-config)"
 
 # it the config-path is a URL we save it to a default local location
 # otherwise, it it's a local path we use that.

@@ -13,7 +13,7 @@ snapctl set navigation-config!
 snapctl set localization-config!
 snapctl set map="${SNAP_COMMON}/maps/current_map.yaml"
 snapctl set map-yaml-path!
-snapctl set map-saver!
+snapctl set map-saver-config!
 
 if ! snapctl is-connected ros-humble; then
   logger -t ${SNAP_NAME} "Plug 'ros-humble' isn't connected, \

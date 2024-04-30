@@ -13,7 +13,7 @@ case "${SIMULATION}" in
 		;;
 esac
 
-OPTS="slam-config navigation-config localization-config map-yaml-path map-saver"
+OPTS="slam-config navigation-config localization-config map-yaml-path map-saver-config"
 for OPT in ${OPTS}; do
   CONFIG="$(snapctl get ${OPT})"
 	if [ -n "${CONFIG}" ]; then

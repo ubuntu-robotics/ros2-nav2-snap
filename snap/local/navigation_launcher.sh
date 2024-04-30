@@ -4,7 +4,7 @@ NAV_CONFIG_FILE="$(snapctl get navigation-config)"
 SIMULATION="$(snapctl get simulation)"
 
 if [ -z "${NAV_CONFIG_FILE}" ] ; then
-    echo "no localization configuration file found."
+    echo "No navigation configuration file found."
     exit 1
 fi
 

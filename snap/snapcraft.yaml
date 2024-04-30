@@ -17,11 +17,49 @@ description: |
   This will terminate the mapping and automatically
   save the map in '${SNAP_COMMON}/maps/new_map.{yaml,png}'.
 
+  If mapping is not required, a map can also be loaded via the following snap parameters:
+
+    - map-yaml-path (string, default: '')
+  
+  The parameter can either be set to a local file with:
+
+    snap set ros2-nav2 map-yaml-path="$SNAP_COMMON/config/map.yaml"
+  
+  Or by means of a URL with:
+
+    snap set ros2-nav2 map-yaml-path="https://raw.githubusercontent.com/robot-repo/map.yaml"
+  
+  The image associated to the map is exctracted from the yaml file.
+
   With the environment mapped, one can make use of the autonomous navigation.
   To do so, start the localisation and navigation with,
 
     snap start ros2-nav2.localization
     snap start ros2-nav2.navigation
+
+  The applications can be configured by the following parameters:
+
+    - slam-config (string, default: '')
+    - navigation-config (string, default: '')
+    - localization-config (string, default: '')
+    - map-saver-config (bool, default: '')
+
+    The SNAP offers some template configurations in the $SNAP_COMMON/configuration_templates
+    that can be copied, modified and placed in $SNAP_COMMON/config for usage.
+    Those can be set up with the config parameter as follows:
+
+    snap set ros2-nav2 app-config="$SNAP_COMMON/config/config.yaml"
+
+    In alternative, a custom configuration file can be used. The file can be provided
+    by means of a URL. In such case, the snap will download the file and
+    place it in `$SNAP_COMMON/config/`.
+    To configure the config-filepath to a URL:
+
+    snap set ros2-nav2 app-config="https://raw.githubusercontent.com/robot-repo/config.yaml"
+
+    Note: the URL must be reachable by the snap. When using a URL,
+    the configuration file will be downloaded everytime the joy app is launched.
+    Therefore a configuration update upstream will be applied with the application relaunch.
 
 grade: stable
 confinement: strict
