@@ -15,7 +15,7 @@ MAP_SAVER_CONFIG_FILE="$(snapctl get map-saver-config)"
 # it the config-path is a URL we save it to a default local location
 # otherwise, it it's a local path we use that.
 if is_url "${MAP_SAVER_CONFIG_FILE}" ; then
-  STORAGE_PATH_TO_CONFIG="$SNAP_COMMON/config/nav2_params.yaml"
+  STORAGE_PATH_TO_CONFIG="$SNAP_COMMON/config/map_saver.yaml"
   if get_url "${MAP_SAVER_CONFIG_FILE}" "${STORAGE_PATH_TO_CONFIG}"; then
     CONFIG_FILE=${STORAGE_PATH_TO_CONFIG}
   fi

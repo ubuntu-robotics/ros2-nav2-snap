@@ -36,7 +36,12 @@ The slam application parameters can be configured via the following snap paramet
 
     - slam-config (string, default: '')
 
-The slam configuration file can be either edited from the templates available at `$SNAP_COMMON/configuration_templates` modified and placed in `$SNAP_COMMON/config`. Then, the parameter has to be configured to the local configuration file as follows:
+The slam configuration file can be either edited from the templates available at `$SNAP_COMMON/configuration_templates` and used via:
+
+`snap set ros2-nav2 slam-config="$SNAP_COMMON/configuration_templates/slam_params_template.yaml"`
+
+In case you want to reinitialise the templates, you can simply issue the command `ros2-nav2.reset-config-templates` which will reset all configuration files.
+In alternative, a custom file can be placed in `$SNAP_COMMON/config`. Then, it must be configured to the local file as follows:
 
 `snap set ros2-nav2 slam-config="$SNAP_COMMON/config/slam_params.yaml"`
 
@@ -59,7 +64,12 @@ The map saver can be configured via the following snap parameter:
 Without a configuration the map_saver will be called with the default parameters provided upstream.
 The parameters that can be configured by means of a yaml file are `free_thresh_default` and `occupied_thresh_default`.
 
-The map-saver configuration file can be either edited from the templates available at `$SNAP_COMMON/configuration_templates` modified and placed in `$SNAP_COMMON/config`. Then, the parameter has to be configured to the local configuration file as follows:
+The map-saver configuration file can be either edited from the templates available at `$SNAP_COMMON/configuration_templates` and used via:
+
+`snap set ros2-nav2 map-saver-config="$SNAP_COMMON/configuration_templates/map_saver_template.yaml"`
+
+In case you want to reinitialise the templates, you can simply issue the command `ros2-nav2.reset-config-templates` which will reset all configuration files.
+In alternative, a custom file can be placed in `$SNAP_COMMON/config`. Then, it must be configured to the local file as follows:
 
 `snap set ros2-nav2 map-saver-config="$SNAP_COMMON/config/map_saver_params.yaml"`
 
@@ -111,7 +121,12 @@ The localization application parameters can be configured via the following snap
 
     - localization-config (string, default: '')
 
-The localization configuration file can be either edited from the templates available at `$SNAP_COMMON/configuration_templates` modified and placed in `$SNAP_COMMON/config`. Then, the parameter has to be configured to the local configuration file as follows:
+The localization configuration file can be either edited from the templates available at `$SNAP_COMMON/configuration_templates` and used via:
+
+`snap set ros2-nav2 localization-config="$SNAP_COMMON/configuration_templates/localization_params_template.yaml"`
+
+In case you want to reinitialise the templates, you can simply issue the command `ros2-nav2.reset-config-templates` which will reset all configuration files.
+In alternative, a custom file can be placed in `$SNAP_COMMON/config`. Then, it must be configured to the local file as follows:
 
 `snap set ros2-nav2 localization-config="$SNAP_COMMON/config/localization_params.yaml"`
 
@@ -138,9 +153,14 @@ The navigation application parameters can be configured via the following snap p
 
     - navigation-config (string, default: '')
 
-The navigation configuration file can be either edited from the templates available at `$SNAP_COMMON/configuration_templates` modified and placed in `$SNAP_COMMON/config`. Then, the parameter has to be configured to the local configuration file as follows:
+The navigation configuration file can be either edited from the templates available at `$SNAP_COMMON/configuration_templates` and used via:
 
-`snap set ros2-nav2 navigation-config="$SNAP_COMMON/config/navigation_params.yaml"`
+`snap set ros2-nav2 navigation-config="$SNAP_COMMON/configuration_templates/nav2_params_template.yaml"`
+
+In case you want to reinitialise the templates, you can simply issue the command `ros2-nav2.reset-config-templates` which will reset all configuration files.
+In alternative, a custom file can be placed in `$SNAP_COMMON/config`. Then, it must be configured to the local file as follows:
+
+`snap set ros2-nav2 navigation-config="$SNAP_COMMON/configuration-templates/navigation_params.yaml"`
 
 The local configuration should be at a path accessible to the snap such as `$SNAP_COMMON`.
 
