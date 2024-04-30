@@ -94,7 +94,7 @@ apps:
     plugs: [network, network-bind]
     extensions: [ros2-humble-ros-base]
 
-  reset-config:
+  reset-config-templates:
     command: usr/bin/reset_config.sh
 
   slam:

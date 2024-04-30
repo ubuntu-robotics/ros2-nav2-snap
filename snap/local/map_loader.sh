@@ -6,7 +6,6 @@ MAP_YAML_URL="$(snapctl get map-yaml-path)"
 source $SNAP/usr/bin/url_management.sh
 
 if [ -n "${MAP_YAML_URL}" ]; then
-  echo "MAP YAML URL defined downloading it"
   MAP_NAME=$(basename "$MAP_YAML_URL")
   if get_url "${MAP_YAML_URL}" "${MAP_DIRS}/${MAP_NAME}"; then
     echo "Map yaml file downloaded successfully"

@@ -8,8 +8,6 @@ amcl:
 
     scan_topic: scan_filtered
 
-    # Galactic
-    # robot_model_type: omnidirectional
     # Humble
     robot_model_type: nav2_amcl::OmniMotionModel
 
