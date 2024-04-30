@@ -5,7 +5,12 @@ MAP_YAML_URL="$(snapctl get map-yaml-path)"
 
 source $SNAP/usr/bin/url_management.sh
 
-if [ -n "${MAP_YAML_URL}" ]; then
+if ! is_url "${MAP_YAML_URL}"; then
+    echo "Map yaml url not defined, using local map"
+    exec $@
+fi
+
+if is_url "${MAP_YAML_URL}" ; then
   MAP_NAME=$(basename "$MAP_YAML_URL")
   if get_url "${MAP_YAML_URL}" "${MAP_DIRS}/${MAP_NAME}"; then
     echo "Map yaml file downloaded successfully"
