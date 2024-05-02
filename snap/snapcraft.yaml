@@ -1,0 +1,125 @@
+name: ros2-nav2
+version: '0.1'
+license: Apache-2.0
+summary: The ros2-nav2 navigation snap
+description: |
+  The snap provides mapping, localization and navigation capabilities.
+
+  The mapping application can be launched as,
+
+    snap start ros2-nav2.slam
+
+  After launching the app, simply drive the robot around until you've mapped the area.
+  Once finished, stop the mapping with,
+
+    snap stop ros2-nav2.slam
+
+  This will terminate the mapping and automatically
+  save the map in '${SNAP_COMMON}/maps/new_map.{yaml,png}'.
+
+  If mapping is not required, a map can also be loaded via the following snap parameters:
+
+    - map-yaml-path (string, default: '')
+  
+  The parameter can either be set to a local file with:
+
+    snap set ros2-nav2 map-yaml-path="$SNAP_COMMON/config/map.yaml"
+  
+  Or by means of a URL with:
+
+    snap set ros2-nav2 map-yaml-path="https://raw.githubusercontent.com/robot-repo/map.yaml"
+  
+  The image associated to the map is exctracted from the yaml file.
+
+  With the environment mapped, one can make use of the autonomous navigation.
+  To do so, start the localisation and navigation with,
+
+    snap start ros2-nav2.localization
+    snap start ros2-nav2.navigation
+
+  The applications can be configured by the following parameters:
+
+    - slam-config (string, default: '')
+    - navigation-config (string, default: '')
+    - localization-config (string, default: '')
+    - map-saver-config (string, default: '')
+
+    The SNAP offers some template configurations in the $SNAP_COMMON/configuration_templates
+    that can be copied, modified and placed in $SNAP_COMMON/config for usage.
+    Those can be set up with the config parameter as follows:
+
+    snap set ros2-nav2 app-config="$SNAP_COMMON/config/config.yaml"
+
+    In alternative, a custom configuration file can be used. The file can be provided
+    by means of a URL. In such case, the snap will download the file and
+    place it in `$SNAP_COMMON/config/`.
+    To configure the config-filepath to a URL:
+
+    snap set ros2-nav2 app-config="https://raw.githubusercontent.com/robot-repo/config.yaml"
+
+    Note: the URL must be reachable by the snap. When using a URL,
+    the configuration file will be downloaded everytime the joy app is launched.
+    Therefore a configuration update upstream will be applied with the application relaunch.
+
+grade: stable
+confinement: strict
+base: core22
+
+contact: https://github.com/ubuntu-robotics/ros2-nav2/issues
+issues: https://github.com/ubuntu-robotics/ros2-nav2/issues
+
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+
+hooks:
+  configure:
+    plugs: [network]
+
+apps:
+  localization:
+    command: usr/bin/localization_launcher.sh
+    command-chain: [usr/bin/map_loader.sh]
+    daemon: simple
+    install-mode: disable
+    plugs: [network, network-bind]
+    extensions: [ros2-humble-ros-base]
+
+  navigation:
+    command: usr/bin/navigation_launcher.sh
+    command-chain: [usr/bin/mux_select_nav_vel.sh]
+    daemon: simple
+    install-mode: disable
+    plugs: [network, network-bind]
+    extensions: [ros2-humble-ros-base]
+
+  reset-config-templates:
+    command: usr/bin/reset_config.sh
+
+  slam:
+    command: usr/bin/slam_launcher.sh
+    daemon: simple
+    install-mode: disable
+    stop-command: usr/bin/save_map.sh
+    post-stop-command: usr/bin/slam_post_stop.sh
+    plugs: [network, network-bind]
+    extensions: [ros2-humble-ros-base]
+
+parts:
+  ros2-nav2:
+    plugin: nil
+    stage-packages:
+      - wget
+      - libssl3
+      - ros-humble-nav2-bringup
+
+  scripts:
+    plugin: dump
+    source: snap/local/
+    organize:
+      '*.sh': usr/bin/
+  configuration-templates:
+    plugin: dump
+    source: snap/local/configuration_templates/
+    organize:
+      '*.yaml': usr/share/ros2-nav2/configuration_templates/

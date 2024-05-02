@@ -1,0 +1,21 @@
+#!/bin/sh -e
+
+# Make sure the folders exist
+mkdir -p ${SNAP_COMMON}/config
+mkdir -p ${SNAP_COMMON}/maps
+
+. ${SNAP}/usr/bin/reset_config.sh
+
+# set default configuration values
+snapctl set simulation="False"
+snapctl set slam-config!
+snapctl set navigation-config!
+snapctl set localization-config!
+snapctl set map="${SNAP_COMMON}/maps/current_map.yaml"
+snapctl set map-yaml-path!
+snapctl set map-saver-config!
+
+if ! snapctl is-connected ros-humble; then
+  logger -t ${SNAP_NAME} "Plug 'ros-humble' isn't connected, \
+    please run: snap connect ${SNAP_NAME}:ros-humble <providing-snap>"
+fi
