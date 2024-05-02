@@ -55,7 +55,7 @@ jobs:
                     sudo snap install ros2-cli --channel=humble/beta
 
                     ## Set a slam config
-                    sudo snap set ros2-nav2 slam-config=https://raw.githubusercontent.com/husarion/rosbot-xl-nav-snap/main/snap/local/slam_params.yaml
+                    sudo snap set ros2-nav2 slam-config=https://raw.githubusercontent.com/ubuntu-robotics/ros2-nav2-snap/main/snap/local/configuration_templates/slam_params_template.yaml
 
                     ## Test slam application
                     sudo snap start ros2-nav2.slam
@@ -68,7 +68,7 @@ jobs:
                     sudo snap set ros2-nav2 map-yaml-path=https://raw.githubusercontent.com/ros-planning/navigation2/main/nav2_bringup/maps/turtlebot3_world.yaml
 
                     ## Set localization configuration
-                    sudo snap set ros2-nav2 localization-config=https://raw.githubusercontent.com/husarion/rosbot-xl-nav-snap/main/snap/local/localization_params.yaml
+                    sudo snap set ros2-nav2 localization-config=https://raw.githubusercontent.com/ubuntu-robotics/ros2-nav2-snap/main/snap/local/configuration_templates/localization_params_template.yaml
 
                     ## Test localization application
                     sudo snap start ros2-nav2.localization
@@ -82,12 +82,12 @@ jobs:
                     if [ -n "$map_location" ]; then
                       echo "Map found"
                     else
-                        echo "Could not find map at $map_location"
-                        exit 1
+                      echo "Could not find map at $map_location"
+                      exit 1
                     fi             
 
                     ## Set navigation configuration
-                    sudo snap set ros2-nav2 navigation-config=https://raw.githubusercontent.com/husarion/rosbot-xl-nav-snap/main/snap/local/nav2_params.yaml
+                    sudo snap set ros2-nav2 navigation-config=https://raw.githubusercontent.com/ubuntu-robotics/ros2-nav2-snap/main/snap/local/configuration_templates/nav2_params_template.yaml
 
                     ## Test navigation configuration
                     sudo snap start ros2-nav2.navigation
