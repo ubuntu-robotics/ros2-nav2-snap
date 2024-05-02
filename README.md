@@ -36,11 +36,14 @@ The available configuration parameters are listed below:
 - [localization-config](https://github.com/ubuntu-robotics/ros2-nav2-snap/blob/main/snap/hooks/install#L13) (string, default: "")
 - [navigation-config](https://github.com/ubuntu-robotics/ros2-nav2-snap/blob/main/snap/hooks/install#L12) (string, default: "")
 
-The `slam-config`, `localization-config`, and `navigation-config` parameters are essential for the proper functioning of these applications.
+The `slam-config`, `localization-config`, and `navigation-config` parameters are essentials for the proper functioning of these applications.
 
 These parameters must be set either to a local configuration file accessible within the SNAP environment (such as `$SNAP_COMMON`), or to a URL hosting the desired configuration.
 
-Additionally, a set of configuration_templates is available at `$SNAP_COMMON/configuration_templates`. Those files are only meant to be a template, they can be modified and used by setting them to the parameters (e.g. `snap set ros2-nav2 slam-config="/var/snap/ros2-nav2/common/configuration_templates/slam_params_template.yaml"`).
+Additionally, a set of configuration_templates is available at `$SNAP_COMMON/configuration_templates`. Those files are only meant to be a template, they can be modified and used by setting them to the parameters.
+An example of using a template for slam-config is as follows:
+
+`snap set ros2-nav2 slam-config="/var/snap/ros2-nav2/common/configuration_templates/slam_params_template.yaml"`
 
 In case you want to reinitialize the templates, you can simply issue the command `ros2-nav2.reset-config-templates` which will reset all configuration files.
 
@@ -59,12 +62,12 @@ This can either point to one of our templates, to a custom file within $SNAP_COM
 
 Once configured, SLAM can be launched as follows:
 
-`snap start rosbot-xl-nav.slam`
+`snap start ros2-nav2.slam`
 
 After starting, one can then drive the robot around to create a 2D representation of the environment.
 Once the area is covered, the application can be stopped with:
 
-`snap stop rosbot-xl-nav.slam`
+`snap stop ros2-nav2.slam`
 
 When the application is terminated, the map is automatically saved at `$SNAP_COMMON/maps/current_map.{png,yaml}`.
 
