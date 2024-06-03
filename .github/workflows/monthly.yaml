@@ -6,6 +6,6 @@ on:
 
 jobs:
   main:
-    uses: ubuntu-robotics/ros2-teleop-snap/.github/workflows/snap.yaml@main
+    uses: ubuntu-robotics/ros2-nav2-snap/.github/workflows/snap.yaml@main
     with:
       branch-name: "main"
