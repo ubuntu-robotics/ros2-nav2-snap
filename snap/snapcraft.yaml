@@ -95,7 +95,7 @@ apps:
     daemon: simple
     install-mode: disable
     plugs: [network, network-bind]
-    extensions: [ros2-humble-ros-base]
+    extensions: [ros2-humble-desktop]
 
   navigation:
     command: usr/bin/navigation_launcher.sh
@@ -103,7 +103,7 @@ apps:
     daemon: simple
     install-mode: disable
     plugs: [network, network-bind]
-    extensions: [ros2-humble-ros-base]
+    extensions: [ros2-humble-desktop]
 
   reset-config-templates:
     command: usr/bin/reset_config.sh
@@ -115,15 +115,15 @@ apps:
     stop-command: usr/bin/save_map.sh
     post-stop-command: usr/bin/slam_post_stop.sh
     plugs: [network, network-bind]
-    extensions: [ros2-humble-ros-base]
+    extensions: [ros2-humble-desktop]
 
 parts:
   ros2-nav2:
-    plugin: nil
+    plugin: colcon
+    source: .
     stage-packages:
       - wget
       - libssl3
-      - ros-humble-nav2-bringup
 
   scripts:
     plugin: dump
