@@ -65,7 +65,7 @@ jobs:
                     sudo snap stop ros2-nav2.slam
 
                     ## Load map
-                    sudo snap set ros2-nav2 map-yaml-path=https://raw.githubusercontent.com/ros-planning/navigation2/main/nav2_bringup/maps/turtlebot3_world.yaml
+                    sudo snap set ros2-nav2 map-yaml-path=https://raw.githubusercontent.com/ros-navigation/navigation2/humble/nav2_bringup/maps/turtlebot3_world.yaml
 
                     ## Set localization configuration
                     sudo snap set ros2-nav2 localization-config=https://raw.githubusercontent.com/ubuntu-robotics/ros2-nav2-snap/main/snap/local/configuration_templates/localization_params_template.yaml
