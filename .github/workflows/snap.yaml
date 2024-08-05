@@ -33,9 +33,17 @@ jobs:
                       local timeout="${3}"
                       local start_time=$(date +%s)
 
+                      function is_running {
+                        local topic_or_node="${1}"
+                        local name="${2}"
+                        (ros2 $topic_or_node list | grep -q "$name")
+                        return $?
+                      }
+
+
                       while true; do
-                        ros2 "${topic_or_node}" list | grep -q "${name}"
-                        if [ $? -eq 0 ]; then
+
+                        if is_running "${topic_or_node}" "${name}" ; then
                           echo "${name} is running."
                           return 0
                         fi
