@@ -53,6 +53,9 @@ jobs:
 
                     ## Install ROS 2 cli
                     sudo snap install ros2-cli --channel=humble/beta
+                    ## Install turtlebot3c-bringup necessary for the mux service
+                    sudo snap install ros2-teleop --channel=humble/beta
+                    sudo snap set ros2-teleop nav-vel="cmd_vel_nav"
 
                     ## Set a slam config
                     sudo snap set ros2-nav2 slam-config=https://raw.githubusercontent.com/ubuntu-robotics/ros2-nav2-snap/main/snap/local/configuration_templates/slam_params_template.yaml
