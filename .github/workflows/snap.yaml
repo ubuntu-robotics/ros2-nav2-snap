@@ -21,7 +21,7 @@ jobs:
       store-login: ${{ secrets.STORE_LOGIN }}
     with:
       branch-name: ${{ inputs.branch-name == '' && github.ref || inputs.branch-name }}
-      snap-name: ros2-teleop
+      snap-name: ros2-nav2
       enable-experimental-extensions-env: true
       publish: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
       test-script: |
@@ -54,7 +54,8 @@ jobs:
                     ## Install ROS 2 cli
                     sudo snap install ros2-cli --channel=humble/beta
                     ## Install turtlebot3c-bringup necessary for the mux service
-                    sudo snap install ros2-teleop --channel=humble/beta
+                    # TODO replace with humble/stable once released
+                    sudo snap install ros2-teleop --channel=latest/edge
                     sudo snap set ros2-teleop nav-vel="cmd_vel_nav"
 
                     ## Set a slam config
