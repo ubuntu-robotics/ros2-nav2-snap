@@ -53,7 +53,7 @@ jobs:
 
                     ## Install ROS 2 cli
                     sudo snap install ros2-cli --channel=humble/beta
-                    ## Install turtlebot3c-bringup necessary for the mux service
+                    ## Install ros2-teleop necessary for the mux service
                     # TODO replace with humble/stable once released
                     sudo snap install ros2-teleop --channel=latest/edge
                     sudo snap set ros2-teleop nav-vel="cmd_vel_nav"
