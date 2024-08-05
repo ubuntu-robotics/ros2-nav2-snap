@@ -21,7 +21,7 @@ jobs:
       store-login: ${{ secrets.STORE_LOGIN }}
     with:
       branch-name: ${{ inputs.branch-name == '' && github.ref || inputs.branch-name }}
-      snap-name: ros2-teleop
+      snap-name: ros2-nav2
       enable-experimental-extensions-env: true
       publish: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
       test-script: |
@@ -53,6 +53,10 @@ jobs:
 
                     ## Install ROS 2 cli
                     sudo snap install ros2-cli --channel=humble/beta
+                    ## Install ros2-teleop necessary for the mux service
+                    # TODO replace with humble/stable once released
+                    sudo snap install ros2-teleop --channel=latest/edge
+                    sudo snap set ros2-teleop nav-vel="cmd_vel_nav"
 
                     ## Set a slam config
                     sudo snap set ros2-nav2 slam-config=https://raw.githubusercontent.com/ubuntu-robotics/ros2-nav2-snap/main/snap/local/configuration_templates/slam_params_template.yaml
@@ -65,7 +69,7 @@ jobs:
                     sudo snap stop ros2-nav2.slam
 
                     ## Load map
-                    sudo snap set ros2-nav2 map-yaml-path=https://raw.githubusercontent.com/ros-planning/navigation2/main/nav2_bringup/maps/turtlebot3_world.yaml
+                    sudo snap set ros2-nav2 map-yaml-path=https://raw.githubusercontent.com/ros-navigation/navigation2/humble/nav2_bringup/maps/turtlebot3_world.yaml
 
                     ## Set localization configuration
                     sudo snap set ros2-nav2 localization-config=https://raw.githubusercontent.com/ubuntu-robotics/ros2-nav2-snap/main/snap/local/configuration_templates/localization_params_template.yaml
