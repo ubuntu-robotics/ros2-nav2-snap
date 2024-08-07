@@ -2,10 +2,10 @@ name: snap
 on:
   push:
     branches:
-      - main
+      - jazzy
   pull_request:
     branches:
-      - main
+      - jazzy
   workflow_dispatch:
   workflow_call:
    inputs:
@@ -24,6 +24,7 @@ jobs:
       snap-name: ros2-nav2
       enable-experimental-extensions-env: true
       publish: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+      publish-track: jazzy
       test-script: |
                     #!/bin/bash
 
