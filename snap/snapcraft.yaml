@@ -75,14 +75,14 @@ description: |
 
 grade: stable
 confinement: strict
-base: core22
+base: core24
 
 contact: https://github.com/ubuntu-robotics/ros2-nav2/issues
 issues: https://github.com/ubuntu-robotics/ros2-nav2/issues
 
-architectures:
-  - build-on: amd64
-  - build-on: arm64
+platforms:
+  amd64:
+  arm64:
 
 hooks:
   configure:
@@ -95,7 +95,7 @@ apps:
     daemon: simple
     install-mode: disable
     plugs: [network, network-bind]
-    extensions: [ros2-humble-desktop]
+    extensions: [ros2-jazzy-desktop]
 
   navigation:
     command: usr/bin/navigation_launcher.sh
@@ -103,7 +103,7 @@ apps:
     daemon: simple
     install-mode: disable
     plugs: [network, network-bind]
-    extensions: [ros2-humble-desktop]
+    extensions: [ros2-jazzy-desktop]
 
   reset-config-templates:
     command: usr/bin/reset_config.sh
@@ -115,7 +115,7 @@ apps:
     stop-command: usr/bin/save_map.sh
     post-stop-command: usr/bin/slam_post_stop.sh
     plugs: [network, network-bind]
-    extensions: [ros2-humble-desktop]
+    extensions: [ros2-jazzy-desktop]
 
 parts:
   ros2-nav2:
