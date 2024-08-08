@@ -5,7 +5,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  main:
-    uses: ubuntu-robotics/ros2-nav2-snap/.github/workflows/snap.yaml@main
+  humble:
+    uses: ubuntu-robotics/ros2-nav2-snap/.github/workflows/snap.yaml@humble
     with:
-      branch-name: "main"
+      branch-name: "humble"
+  jazzy:
+    uses: ubuntu-robotics/ros2-nav2-snap/.github/workflows/snap.yaml@jazzy
+    with:
+      branch-name: "jazzy"
